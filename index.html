@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>hockey.va · Tomás Landa</title>
+<title>Tomás Landa · Video análisis de hockey | hockey.va</title>
 <meta name="description" content="Tomás Landa, video analista de la Selección de Chile. Video análisis de hockey para clubes, equipos y jugadores, CV deportivo en video y cursos para aprender a analizar desde cero.">
 <meta property="og:title" content="hockey.va · Tomás Landa, video analista de hockey">
 <meta property="og:description" content="El video analista de la Selección de Chile que te enseña a ver el partido como un profesional.">
@@ -11,6 +11,10 @@
 <meta property="og:url" content="https://landatomas95-cmd.github.io/hockeyva/">
 <meta property="og:type" content="website">
 <link rel="icon" href="img/favicon.png">
+<link rel="canonical" href="https://landatomas95-cmd.github.io/hockeyva/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Tomás Landa","jobTitle":"Video analista de hockey","url":"https://landatomas95-cmd.github.io/hockeyva/","image":"https://landatomas95-cmd.github.io/hockeyva/img/quien-soy.jpg","email":"landatomas95@gmail.com","sameAs":["https://www.instagram.com/hockey.va/"],"knowsAbout":["Video análisis","Hockey sobre césped","LongoMatch"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
@@ -180,6 +184,44 @@ section + section { border-top: 1px solid var(--linea); }
 .contacto .dir { font-family: var(--mono); font-size: .85rem; color: var(--texto-2); text-transform: none; letter-spacing: 0; margin-left: auto; overflow-wrap: anywhere; }
 footer { border-top: 1px solid var(--linea); padding-block: 28px 40px; color: var(--texto-2); font-size: .9rem; }
 footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+/* Barra de credenciales */
+.prueba { border-block: 1px solid var(--linea); background: var(--noche-2); }
+.prueba .contenedor { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
+.prueba div { display: grid; gap: 2px; padding: 18px 12px 18px 0; min-width: 0; }
+.prueba b { font-family: var(--display); font-size: 1.55rem; line-height: 1.05; text-transform: uppercase; }
+.prueba b em { font-style: normal; color: var(--cesped); }
+.prueba span { font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-2); }
+@media (min-width: 900px) { .prueba .contenedor { grid-template-columns: repeat(4, 1fr); } .prueba div + div { padding-left: 22px; border-left: 1px solid var(--linea); } }
+
+/* Cómo trabajo: proceso real en 3 pasos */
+.pasos { list-style: none; margin: 0 0 28px; padding: 0; display: grid; gap: 14px; counter-reset: paso; }
+@media (min-width: 900px) { .pasos { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+.pasos li { counter-increment: paso; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: start; padding: 20px; border: 1px solid var(--linea); border-radius: var(--radio); min-width: 0; }
+.pasos li::before { content: counter(paso); grid-row: span 2; width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; background: var(--cesped); color: #06210F; font-family: var(--display); font-weight: 700; font-size: 1.4rem; }
+.pasos b { font-family: var(--display); font-size: 1.3rem; text-transform: uppercase; line-height: 1.1; }
+.pasos p { color: var(--texto-2); font-size: .98rem; }
+.precio { font-family: var(--mono); font-size: .85rem; color: var(--texto); border-top: 1px dashed var(--linea); padding-top: 14px; }
+.precio b { font-family: var(--display); font-size: 1.5rem; color: var(--cesped); font-weight: 700; letter-spacing: .01em; }
+.nota-precio { margin-top: 14px; color: var(--texto-2); font-size: .9rem; }
+
+/* Galería: en compu, grilla completa; en celu, carrusel con pista */
+@media (min-width: 900px) { .galeria { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); grid-auto-columns: auto; overflow: visible; } .galeria img { aspect-ratio: 4/5; } .desliza { display: none; } }
+.desliza { margin-top: 10px; font-family: var(--mono); font-size: .74rem; color: var(--texto-2); letter-spacing: .06em; text-transform: uppercase; }
+
+/* Preguntas frecuentes */
+.faq { display: grid; gap: 10px; max-width: 820px; }
+.faq details { border: 1px solid var(--linea); border-radius: var(--radio); background: var(--noche-2); }
+.faq summary { cursor: pointer; list-style: none; padding: 18px 20px; font-weight: 600; font-size: 1.08rem; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--mono); color: var(--cesped); font-size: 1.2rem; line-height: 1.4; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding: 0 20px 18px; color: var(--texto-2); max-width: 65ch; }
+.gratis .chica { font-size: .9rem; opacity: .8; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+footer a { text-decoration: none; color: var(--texto-2); }
+footer a:hover { color: var(--texto); }
+@media (min-width: 900px) { .portada h1 { max-width: 21ch; } }
 </style>
 <!--/STYLE-->
 </head>
@@ -189,6 +231,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
   <div class="contenedor">
     <a class="logo" href="#inicio" aria-label="hockey.va, inicio">hockey<span>.</span>va</a>
     <nav aria-label="Secciones">
+      <a href="#trayectoria">Trayectoria</a>
       <a href="#servicios">Servicios</a>
       <a href="#cursos">Cursos</a>
       <a href="#clase-gratis">Clase gratis</a>
@@ -205,8 +248,8 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
       <h1 id="titulo">El video analista de la Selección de Chile que te enseña a <em>ver el partido como un profesional</em></h1>
       <p class="bajada">Video análisis para clubes, equipos y jugadores, y cursos para aprender a analizar desde cero.</p>
       <div class="botones">
-        <a class="btn btn-verde" href="#servicios">Servicios para clubes</a>
-        <a class="btn btn-linea" href="#cursos">Cursos</a>
+        <a class="btn btn-verde" href="#servicios">Ver servicios</a>
+        <a class="btn btn-linea" href="#clase-gratis">Clase gratis</a>
       </div>
       <div class="timeline" aria-hidden="true">
         <div class="pista">
@@ -233,6 +276,15 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
       </div>
     </div>
   </section>
+
+  <div class="prueba" aria-label="Credenciales">
+    <div class="contenedor">
+      <div><b>Selección <em>de Chile</em></b><span>Video analista desde 2025</span></div>
+      <div><b>Mundial <em>Junior</em></b><span>India 2025</span></div>
+      <div><b>Medalla <em>de plata</em></b><span>Juegos Suramericanos 2026</span></div>
+      <div><b><em>+13.000</em></b><span>Seguidores en Instagram</span></div>
+    </div>
+  </div>
 
   <section id="quien-soy" aria-labelledby="t-quien">
     <div class="contenedor quien">
@@ -313,6 +365,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
         <figure><img src="img/g5-odesur-torre.jpg" alt="Tomás filmando desde la torre en los Juegos Suramericanos" loading="lazy"><figcaption>Juegos Suramericanos · Santa Fe 2026</figcaption></figure>
         <figure><img src="img/g6-odesur-medalla.jpg" alt="Tomás con la medalla de plata de los Juegos Suramericanos Santa Fe 2026" loading="lazy"><figcaption>Medalla de plata · Santa Fe 2026</figcaption></figure>
       </div>
+      <p class="desliza" aria-hidden="true">Deslizá para ver más fotos →</p>
     </div>
   </section>
 
@@ -323,6 +376,11 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
         <h2 id="t-serv">Video análisis para tu club, tu equipo o tu juego</h2>
         <p>Me mandás el video del partido y te devuelvo los cortes listos para mirar y compartir con el plantel.</p>
       </div>
+      <ol class="pasos" aria-label="Cómo trabajo">
+        <li><b>Me escribís</b><p>Por WhatsApp me contás qué necesitás y me mandás el video del partido.</p></li>
+        <li><b>Analizo el partido</b><p>Uno los videos si vienen en partes, etiqueto las jugadas y armo los cortes.</p></li>
+        <li><b>Te lo entrego</b><p>Todo en YouTube, listo para mirar y compartir con el plantel.</p></li>
+      </ol>
       <div class="diferencial">
         <span class="tag" style="--c:var(--azul-cancha)">Datos e inteligencia artificial</span>
         <h3>Informes automáticos con datos</h3>
@@ -338,6 +396,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
             <li>Cortes de las jugadas clave, ordenados por tema: salidas, cortos, defensa, ataque</li>
             <li>Todo en una playlist de YouTube lista para mirar y reenviar a los jugadores</li>
           </ul>
+          <p class="precio">Desde <b>$60.000 ARS</b> · US$ 39 por partido</p>
           <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20info%20sobre%20el%20video%20an%C3%A1lisis%20para%20mi%20club%20o%20equipo." target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </article>
         <article class="tarjeta">
@@ -349,6 +408,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
             <li>Informe final con los datos del partido y mi conclusión</li>
             <li>Opción express: entrega al día siguiente</li>
           </ul>
+          <p class="precio">Desde <b>$60.000 ARS</b> · US$ 39 por partido</p>
           <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20info%20sobre%20el%20an%C3%A1lisis%20individual%20de%20mis%20partidos." target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </article>
         <article class="tarjeta">
@@ -362,6 +422,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
           <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20armar%20mi%20CV%20deportivo%20en%20video." target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </article>
       </div>
+      <p class="nota-precio">Precios de referencia por partido. Te paso el valor exacto según lo que necesites.</p>
     </div>
   </section>
 
@@ -402,9 +463,25 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
             <li>Qué tener en cuenta para arrancar en el video análisis</li>
             <li>Cómo editar tus primeros videos</li>
           </ul>
+          <p class="chica">Es gratis. Te llega al instante y también por mail.</p>
           <a class="btn" id="btn-clase" href="https://docs.google.com/forms/d/e/1FAIpQLSeVY33NdxuqHTkQm2O7x3wdpsvH9wFHfen74uG7-HUc4yabwQ/viewform" target="_blank" rel="noopener">Quiero la clase gratis</a>
         </div>
         <img src="img/clase-gratis.jpg" alt="Tomás en la torre de filmación con auriculares y cámara, durante el Mundial Junior" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="preguntas" aria-labelledby="t-faq">
+    <div class="contenedor">
+      <div class="encabezado">
+        <span class="tag" style="--c:var(--azul-cancha)">Preguntas frecuentes</span>
+        <h2 id="t-faq">Antes de escribirme</h2>
+      </div>
+      <div class="faq">
+        <details><summary>¿Trabajás a distancia?</summary><p>Sí. Además de los clubes de Argentina y Chile, analicé partidos a distancia para clubes de Suiza, Bélgica e Inglaterra. Solo necesito el video del partido.</p></details>
+        <details><summary>¿Con qué categorías trabajás?</summary><p>Con todas: dirigí y analicé desde escuelita hasta Primera, con varones y con damas.</p></details>
+        <details><summary>¿Cuánto tarda la entrega?</summary><p>Si lo necesitás rápido, la opción express te lo entrega al día siguiente. Para el resto, escribime y coordinamos según el partido.</p></details>
+        <details><summary>¿Necesito comprar un programa para el curso?</summary><p>No. El curso usa LongoMatch, un software gratuito, y la clase gratis te enseña a editar tus primeros videos.</p></details>
       </div>
     </div>
   </section>
@@ -428,7 +505,12 @@ footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-betw
 <footer>
   <div class="contenedor">
     <span>© 2026 hockey.va · Tomás Landa</span>
-    <span>Video análisis de hockey</span>
+    <nav aria-label="Pie">
+      <a href="#servicios">Servicios</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#clase-gratis">Clase gratis</a>
+      <a href="https://www.instagram.com/hockey.va/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
   </div>
 </footer>
 <!--/BODY-->
