@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>hockey.va · Tomás Landa</title>
+<meta name="description" content="Tomás Landa, video analista de la Selección de Chile. Video análisis de hockey para clubes, equipos y jugadores, CV deportivo en video y cursos para aprender a analizar desde cero.">
+<meta property="og:title" content="hockey.va · Tomás Landa, video analista de hockey">
+<meta property="og:description" content="El video analista de la Selección de Chile que te enseña a ver el partido como un profesional.">
+<meta property="og:image" content="img/portada-horizontal.jpg">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<!--STYLE-->
+<style>
+/* Layout: una sola columna pensada para celular; la portada es la vista desde la torre, y cada sección se marca como un evento etiquetado en la línea de tiempo del partido. */
+:root {
+  --noche: #0B1F3A;        /* fondo principal: azul noche de estadio */
+  --noche-2: #12294A;      /* superficies elevadas */
+  --linea: #24406A;        /* bordes y divisores */
+  --texto: #EEF3F9;        /* texto principal */
+  --texto-2: #A9BCD4;      /* texto secundario */
+  --cesped: #2BB673;       /* acento: verde de botón y etiquetas */
+  --cesped-osc: #1E8F59;
+  --azul-cancha: #1E6FD9;  /* azul del césped sintético de las fotos */
+  --ambar: #F2B544;        /* etiqueta de córner corto */
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --cuerpo: "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --radio: 10px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body { margin: 0; background: var(--noche); color: var(--texto); font-family: var(--cuerpo); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--cesped); outline-offset: 3px; border-radius: 6px; }
+.contenedor { width: 100%; max-width: 1080px; margin-inline: auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.02; text-wrap: balance; margin: 0; letter-spacing: .005em; }
+h2 { font-size: clamp(2.2rem, 6vw, 3.4rem); text-transform: uppercase; }
+h3 { font-size: 1.6rem; text-transform: uppercase; }
+p { margin: 0; }
+.texto-2 { color: var(--texto-2); }
+
+/* Etiqueta tipo botón de evento de software de análisis */
+.tag { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--texto); }
+.tag::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: var(--c, var(--cesped)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c, var(--cesped)) 25%, transparent); }
+.tag .tc { color: var(--texto-2); }
+
+/* Botones */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 14px 22px; border-radius: var(--radio); font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; border: 2px solid transparent; transition: background .15s, border-color .15s, transform .15s; }
+.btn:active { transform: translateY(1px); }
+.btn-verde { background: var(--cesped); color: #06210F; }
+.btn-verde:hover { background: #35c982; }
+.btn-linea { border-color: var(--texto); color: var(--texto); background: transparent; }
+.btn-linea:hover { background: rgba(238,243,249,.1); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+
+/* Barra superior */
+.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--noche) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--linea); }
+.barra .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; }
+.logo { font-family: var(--display); font-weight: 700; font-size: 1.7rem; text-decoration: none; letter-spacing: .01em; }
+.logo span { color: var(--cesped); }
+.barra nav { display: flex; gap: 22px; align-items: center; }
+.barra nav a { text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--texto-2); }
+.barra nav a:hover { color: var(--texto); }
+.barra .wa-mini { color: #06210F; background: var(--cesped); padding: 8px 14px; border-radius: 8px; }
+.barra .wa-mini:hover { color: #06210F; background: #35c982; }
+@media (max-width: 720px) { .barra nav a:not(.wa-mini) { display: none; } }
+
+/* Portada */
+.portada { position: relative; overflow: hidden; isolation: isolate; }
+.portada .foto { position: absolute; inset: 0; z-index: -2; }
+.portada .foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.portada::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,31,58,.15) 0%, rgba(11,31,58,.55) 45%, var(--noche) 92%); }
+.portada .contenedor { padding-block: 120px 36px; display: grid; gap: 22px; }
+.portada h1 { font-size: clamp(2.3rem, 7.4vw, 4.3rem); text-transform: uppercase; max-width: 17ch; }
+.portada h1 em { font-style: normal; color: var(--cesped); }
+.portada .bajada { font-size: 1.15rem; max-width: 44ch; color: var(--texto); }
+.botones { display: flex; flex-wrap: wrap; gap: 12px; }
+.botones .btn { flex: 1 1 220px; }
+@media (min-width: 900px) {
+  .portada { min-height: 640px; }
+  .portada .foto { left: 42%; }
+  .portada .foto img { object-position: 50% 25%; }
+  .portada::after { background: linear-gradient(90deg, var(--noche) 40%, rgba(11,31,58,.6) 62%, rgba(11,31,58,.05) 100%), linear-gradient(0deg, var(--noche) 0%, transparent 25%); }
+  .portada .contenedor { padding-block: 120px 48px; }
+  .botones .btn { flex: 0 0 auto; }
+}
+
+/* Línea de tiempo del partido */
+.timeline { margin-top: 18px; display: grid; gap: 10px; }
+.timeline .pista { position: relative; height: 34px; border-radius: 6px; background: repeating-linear-gradient(90deg, var(--noche-2) 0 calc(25% - 2px), var(--linea) calc(25% - 2px) 25%); border: 1px solid var(--linea); }
+.timeline .ev { position: absolute; top: 5px; bottom: 5px; width: 6px; border-radius: 2px; background: var(--c); }
+.timeline .cabezal { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--texto); left: 0; animation: cabezal 14s linear infinite; }
+@keyframes cabezal { from { left: 0; } to { left: 100%; } }
+.timeline .leyenda { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.timeline .cuartos { display: flex; justify-content: space-between; font-family: var(--mono); font-size: .72rem; color: var(--texto-2); }
+.timeline .cuartos span { flex: 1; }
+
+/* Secciones */
+section { padding-block: 72px; }
+section + section { border-top: 1px solid var(--linea); }
+.encabezado { display: grid; gap: 14px; margin-bottom: 36px; max-width: 760px; }
+.encabezado p { color: var(--texto-2); font-size: 1.08rem; max-width: 60ch; }
+
+/* Quién soy */
+.quien { display: grid; gap: 32px; align-items: center; }
+.quien .retrato { border-radius: var(--radio); overflow: hidden; background: #fff; max-width: 420px; }
+.quien .retrato img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: 50% 15%; }
+.quien .texto { display: grid; gap: 16px; font-size: 1.1rem; max-width: 62ch; }
+.hitos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.hito { font-family: var(--mono); font-size: .8rem; border: 1px solid var(--linea); background: var(--noche-2); padding: 7px 12px; border-radius: 999px; color: var(--texto); }
+.hito b { color: var(--cesped); font-weight: 500; }
+@media (min-width: 860px) { .quien { grid-template-columns: 5fr 7fr; gap: 56px; } }
+
+/* Trayectoria */
+.dato { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding: 22px 24px; border-radius: var(--radio); background: var(--noche-2); border: 1px solid var(--linea); margin-bottom: 28px; }
+.dato .num { font-family: var(--display); font-size: clamp(2.6rem, 8vw, 3.6rem); font-weight: 700; line-height: 1; color: var(--cesped); font-variant-numeric: tabular-nums; }
+.dato p { flex: 1 1 260px; color: var(--texto-2); }
+.columnas { display: grid; gap: 22px; }
+@media (min-width: 900px) { .columnas { grid-template-columns: 1.15fr 1fr 1fr; } }
+.bloque { display: grid; gap: 14px; align-content: start; padding-top: 18px; border-top: 3px solid var(--c, var(--cesped)); min-width: 0; }
+.bloque .sub { color: var(--texto-2); }
+.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.lista li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; align-items: baseline; }
+.lista li::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c, var(--cesped)); transform: translateY(-1px); }
+.lista .medalla { color: #D9E1EA; font-weight: 600; }
+.mini { font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--texto-2); margin-top: 6px; }
+
+/* Galería */
+.galeria { margin-top: 44px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(240px, 72%); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-color: var(--linea) transparent; }
+@media (min-width: 900px) { .galeria { grid-auto-columns: calc((100% - 36px) / 4); } }
+.galeria figure { margin: 0; scroll-snap-align: start; display: grid; gap: 8px; }
+.galeria img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; }
+.galeria figcaption { font-family: var(--mono); font-size: .74rem; color: var(--texto-2); letter-spacing: .04em; }
+
+/* Servicios */
+.diferencial { display: grid; gap: 10px; padding: 24px; border-radius: var(--radio); background: linear-gradient(135deg, color-mix(in srgb, var(--azul-cancha) 28%, var(--noche-2)), var(--noche-2)); border: 1px solid var(--linea); margin-bottom: 28px; }
+.diferencial h3 { font-size: 1.7rem; }
+.diferencial p { color: var(--texto); max-width: 64ch; }
+.tarjetas { display: grid; gap: 18px; }
+@media (min-width: 900px) { .tarjetas { grid-template-columns: repeat(3, 1fr); } }
+.tarjeta { display: grid; grid-template-rows: auto auto 1fr auto; gap: 16px; padding: 24px; border-radius: var(--radio); background: var(--noche-2); border: 1px solid var(--linea); min-width: 0; }
+.tarjeta .para { color: var(--texto-2); }
+.tarjeta .btn { width: 100%; }
+
+/* Cursos */
+.curso { display: grid; gap: 28px; align-items: center; }
+@media (min-width: 900px) { .curso { grid-template-columns: 1fr 1fr; gap: 48px; } }
+.curso .tapa { position: relative; border-radius: var(--radio); overflow: hidden; aspect-ratio: 16/10; max-width: 100%; }
+.curso .tapa img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
+.curso .tapa::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,31,58,.92) 0%, rgba(11,31,58,.55) 55%, rgba(11,31,58,.1) 100%); }
+.curso .tapa .rotulo { position: absolute; z-index: 1; left: 22px; bottom: 20px; right: 40%; display: grid; gap: 4px; }
+.curso .tapa .rotulo b { font-family: var(--display); font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1; text-transform: uppercase; }
+.curso .tapa .rotulo i { font-style: normal; font-family: var(--display); font-weight: 600; font-size: 1.3rem; color: var(--cesped); text-transform: uppercase; }
+.curso .info { display: grid; gap: 18px; min-width: 0; }
+.estado { justify-self: start; font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ambar) 18%, transparent); color: var(--ambar); border: 1px solid color-mix(in srgb, var(--ambar) 45%, transparent); }
+
+/* Clase gratis */
+.gratis { display: grid; gap: 28px; align-items: center; padding: 28px; border-radius: 14px; background: var(--cesped); color: #06210F; }
+.gratis h2 { color: #06210F; }
+.gratis p { font-size: 1.1rem; max-width: 52ch; }
+.gratis .tag { color: #06210F; --c: var(--noche); }
+.gratis .btn { background: var(--noche); color: var(--texto); }
+.gratis .btn:hover { background: #163257; }
+.gratis .incluye { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-weight: 600; }
+.gratis .incluye li::before { content: "▶ "; font-size: .8em; }
+.gratis img { border-radius: 10px; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: 50% 35%; }
+@media (min-width: 900px) { .gratis { grid-template-columns: 1.1fr 1fr; padding: 44px; gap: 44px; } }
+
+/* Contacto */
+.contacto { display: grid; gap: 14px; max-width: 520px; }
+.contacto .btn { width: 100%; justify-content: flex-start; }
+.contacto .dir { font-family: var(--mono); font-size: .85rem; color: var(--texto-2); text-transform: none; letter-spacing: 0; margin-left: auto; overflow-wrap: anywhere; }
+footer { border-top: 1px solid var(--linea); padding-block: 28px 40px; color: var(--texto-2); font-size: .9rem; }
+footer .contenedor { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+</style>
+<!--/STYLE-->
+</head>
+<body>
+<!--BODY-->
+<header class="barra">
+  <div class="contenedor">
+    <a class="logo" href="#inicio" aria-label="hockey.va, inicio">hockey<span>.</span>va</a>
+    <nav aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#clase-gratis">Clase gratis</a>
+      <a class="wa-mini" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va." target="_blank" rel="noopener">WhatsApp</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="portada" aria-labelledby="titulo">
+    <div class="foto"><img src="img/portada.jpg" alt="Tomás Landa trabajando en la torre de video análisis de la Selección de Chile, de noche, con la cancha iluminada de fondo" fetchpriority="high"></div>
+    <div class="contenedor">
+      <span class="tag"><span class="tc">REC</span> hockey.va · Tomás Landa</span>
+      <h1 id="titulo">El video analista de la Selección de Chile que te enseña a <em>ver el partido como un profesional</em></h1>
+      <p class="bajada">Video análisis para clubes, equipos y jugadores, y cursos para aprender a analizar desde cero.</p>
+      <div class="botones">
+        <a class="btn btn-verde" href="#servicios">Servicios para clubes</a>
+        <a class="btn btn-linea" href="#cursos">Cursos</a>
+      </div>
+      <div class="timeline" aria-hidden="true">
+        <div class="pista">
+          <i class="ev" style="left:6%;--c:var(--cesped)"></i>
+          <i class="ev" style="left:14%;--c:var(--azul-cancha)"></i>
+          <i class="ev" style="left:21%;--c:var(--ambar)"></i>
+          <i class="ev" style="left:33%;--c:var(--cesped)"></i>
+          <i class="ev" style="left:41%;--c:#E5484D"></i>
+          <i class="ev" style="left:52%;--c:var(--azul-cancha)"></i>
+          <i class="ev" style="left:58%;--c:var(--ambar)"></i>
+          <i class="ev" style="left:67%;--c:var(--cesped)"></i>
+          <i class="ev" style="left:79%;--c:var(--azul-cancha)"></i>
+          <i class="ev" style="left:88%;--c:#E5484D"></i>
+          <i class="ev" style="left:93%;--c:var(--ambar)"></i>
+          <i class="cabezal"></i>
+        </div>
+        <div class="cuartos"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span></div>
+        <div class="leyenda">
+          <span class="tag" style="--c:var(--cesped)">Salida</span>
+          <span class="tag" style="--c:var(--azul-cancha)">Recuperación</span>
+          <span class="tag" style="--c:var(--ambar)">Córner corto</span>
+          <span class="tag" style="--c:#E5484D">Pérdida</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quien-soy" aria-labelledby="t-quien">
+    <div class="contenedor quien">
+      <div class="retrato"><img src="img/quien-soy.jpg" alt="Retrato de Tomás Landa con la camiseta de la Federación Chilena de Hockey" loading="lazy"></div>
+      <div class="texto">
+        <span class="tag">Quién soy</span>
+        <h2 id="t-quien">Del banco de suplentes a la torre de la Selección</h2>
+        <p>Soy Tomás Landa, argentino, y vivo el hockey desde los 10 años. A los 17 empecé a entrenar y a los 20 descubrí el video análisis, que se convirtió en mi forma de ver el juego.</p>
+        <p>Dirigí desde escuelita hasta Primera, en Argentina, Chile e Inglaterra. Trabajé como video analista en clubes de Buenos Aires y de Chile, y a distancia para equipos de Europa.</p>
+        <p>Desde 2025 soy video analista de la Selección de Chile de varones, adulta y junior. Hoy sumo inteligencia artificial y datos a mi trabajo para que cada análisis sea más rápido, más preciso y más fácil de entender.</p>
+        <div class="hitos">
+          <span class="hito">Jugador desde los <b>10</b></span>
+          <span class="hito">Entrenador desde los <b>17</b></span>
+          <span class="hito">Video analista desde los <b>20</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trayectoria" aria-labelledby="t-tray">
+    <div class="contenedor">
+      <div class="encabezado">
+        <span class="tag" style="--c:var(--azul-cancha)">Trayectoria</span>
+        <h2 id="t-tray">Torneos, títulos y horas de video</h2>
+      </div>
+      <div class="dato">
+        <span class="num">+13.000</span>
+        <p>personas siguen <a href="https://www.instagram.com/hockey.va/" target="_blank" rel="noopener">@hockey.va</a>, la cuenta de video análisis y jugadas que creé en 2020.</p>
+      </div>
+      <div class="columnas">
+        <div class="bloque" style="--c:#E5484D">
+          <h3>Selección de Chile</h3>
+          <p class="sub">Video analista de la Selección masculina adulta y junior desde 2025.</p>
+          <ul class="lista">
+            <li>Copa América, Uruguay 2025</li>
+            <li>Mundial Junior, India 2025</li>
+            <li>Pre Mundial, Santiago 2026</li>
+            <li>Copa América Junior, Santiago 2026</li>
+            <li>Junior Pan American Cup, Santiago 2026</li>
+            <li class="medalla">Juegos Suramericanos, Santa Fe 2026: medalla de plata</li>
+          </ul>
+          <p class="mini">Próximos</p>
+          <ul class="lista">
+            <li>Juegos Panamericanos, Lima 2027</li>
+            <li>Mundial Junior</li>
+            <li>Nations Cup</li>
+          </ul>
+        </div>
+        <div class="bloque" style="--c:var(--cesped)">
+          <h3>Entrenador</h3>
+          <p class="sub">Desde los 17 años, de escuelita a Primera, con varones y mujeres.</p>
+          <ul class="lista">
+            <li>Campeón Sub 14 varones con Estudiantes de La Plata</li>
+            <li>Campeón Sub 16 mujeres con Club San Luis (La Plata), 2022</li>
+            <li>Ascenso con el Plantel Superior B de Club San Luis en mi primer año en Primera, 2023</li>
+            <li>Primera de varones de Estudiantes de La Plata en la B del Metropolitano</li>
+            <li>Hoy, entrenador en Club Deportivo Manquehue (Santiago)</li>
+            <li>También en Club San Martín, Club Banco Hipotecario, Club Universitario de La Plata y Repton Hockey Club (Inglaterra)</li>
+          </ul>
+        </div>
+        <div class="bloque" style="--c:var(--ambar)">
+          <h3>Video analista</h3>
+          <p class="sub">En clubes de Argentina y Chile, y a distancia para Europa.</p>
+          <ul class="lista">
+            <li>Club San Luis (La Plata): todos los equipos</li>
+            <li>Club Universitario de La Plata: Primera de varones</li>
+            <li>Club Deportivo Manquehue (Chile): video analista del club</li>
+            <li>Trabajos a distancia para clubes de Suiza, Bélgica e Inglaterra</li>
+          </ul>
+        </div>
+      </div>
+      <div class="galeria" aria-label="Fotos de torneos">
+        <figure><img src="img/g1-mundial-junior-torre.jpg" alt="Tomás en la torre de video del Mundial Junior de India, de noche, con el estadio lleno" loading="lazy"><figcaption>Mundial Junior · India 2025</figcaption></figure>
+        <figure><img src="img/g2-mundial-junior-cancha.jpg" alt="Tomás en la cancha del Mundial Junior de India" loading="lazy"><figcaption>Mundial Junior · India 2025</figcaption></figure>
+        <figure><img src="img/g3-premundial.jpg" alt="Tomás en la torre de filmación del Pre Mundial en Santiago" loading="lazy"><figcaption>Pre Mundial · Santiago 2026</figcaption></figure>
+        <figure><img src="img/g4-jpac.jpg" alt="Tomás de espaldas en la torre, con la chaqueta de Chile Hockey, filmando un partido de noche" loading="lazy"><figcaption>Junior Pan American Cup · Santiago 2026</figcaption></figure>
+        <figure><img src="img/g5-odesur-torre.jpg" alt="Tomás filmando desde la torre en los Juegos Suramericanos" loading="lazy"><figcaption>Juegos Suramericanos · Santa Fe 2026</figcaption></figure>
+        <figure><img src="img/g6-odesur-medalla.jpg" alt="Tomás con la medalla de plata de los Juegos Suramericanos Santa Fe 2026" loading="lazy"><figcaption>Medalla de plata · Santa Fe 2026</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" aria-labelledby="t-serv">
+    <div class="contenedor">
+      <div class="encabezado">
+        <span class="tag">Servicios</span>
+        <h2 id="t-serv">Video análisis para tu club, tu equipo o tu juego</h2>
+        <p>Me mandás el video del partido y te devuelvo los cortes listos para mirar y compartir con el plantel.</p>
+      </div>
+      <div class="diferencial">
+        <span class="tag" style="--c:var(--azul-cancha)">Datos e inteligencia artificial</span>
+        <h3>Informes automáticos con datos</h3>
+        <p>Estoy desarrollando mi propia herramienta para convertir el registro de un partido en un informe automático con datos y gráficos. Así el análisis llega antes y se entiende mejor.</p>
+      </div>
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <span class="tag" style="--c:var(--cesped)">Clubes y equipos</span>
+          <h3>Video análisis para clubes y equipos</h3>
+          <ul class="lista">
+            <li>Recibo los videos y, si vienen en partes, los uno</li>
+            <li>Video completo de cada partido</li>
+            <li>Cortes de las jugadas clave, ordenados por tema: salidas, cortos, defensa, ataque</li>
+            <li>Todo en una playlist de YouTube lista para mirar y reenviar a los jugadores</li>
+          </ul>
+          <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20info%20sobre%20el%20video%20an%C3%A1lisis%20para%20mi%20club%20o%20equipo." target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </article>
+        <article class="tarjeta">
+          <span class="tag" style="--c:var(--azul-cancha)">Jugadores</span>
+          <h3>Análisis individual</h3>
+          <ul class="lista">
+            <li>Cortes de todas tus acciones del partido</li>
+            <li>Correcciones y anotaciones sobre el video</li>
+            <li>Informe final con los datos del partido y mi conclusión</li>
+            <li>Opción express: entrega al día siguiente</li>
+          </ul>
+          <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20info%20sobre%20el%20an%C3%A1lisis%20individual%20de%20mis%20partidos." target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </article>
+        <article class="tarjeta">
+          <span class="tag" style="--c:var(--ambar)">Jugadores</span>
+          <h3>CV deportivo en video</h3>
+          <ul class="lista">
+            <li>Selección de tus mejores acciones</li>
+            <li>Video editado con música y tu foto</li>
+            <li>Entrega en YouTube, listo para mandar con un link a clubes, becas o pruebas</li>
+          </ul>
+          <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va.%20Quiero%20armar%20mi%20CV%20deportivo%20en%20video." target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="cursos" aria-labelledby="t-cursos">
+    <div class="contenedor">
+      <div class="encabezado">
+        <span class="tag" style="--c:var(--ambar)">Cursos</span>
+        <h2 id="t-cursos">Aprendé a analizar partidos desde cero</h2>
+      </div>
+      <div class="curso">
+        <div class="tapa">
+          <img src="img/g4-jpac.jpg" alt="" loading="lazy">
+          <div class="rotulo"><b>Video análisis de hockey</b><i>desde cero</i></div>
+        </div>
+        <div class="info">
+          <span class="estado">Próximamente en Hotmart</span>
+          <p>Aprendé a analizar partidos de hockey con LongoMatch, un software gratuito, con el método que uso como video analista de la Selección de Chile.</p>
+          <p class="texto-2"><b style="color:var(--texto)">Para quién es:</b> entrenadores, ayudantes, jugadores y padres que quieren empezar a analizar partidos sin gastar en programas caros.</p>
+          <ul class="lista">
+            <li>Instalar y configurar LongoMatch</li>
+            <li>Crear tu plantilla de etiquetado para hockey</li>
+            <li>Etiquetar un partido completo y sacar los cortes clave</li>
+            <li>Armar un informe de una página para el plantel</li>
+          </ul>
+          <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Quiero%20que%20me%20avises%20cuando%20salga%20el%20curso%20de%20video%20an%C3%A1lisis." target="_blank" rel="noopener">Avisame cuando salga</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clase-gratis" aria-labelledby="t-gratis">
+    <div class="contenedor">
+      <div class="gratis">
+        <div style="display:grid;gap:18px">
+          <span class="tag">Clase gratis</span>
+          <h2 id="t-gratis">Empezá hoy a analizar partidos</h2>
+          <p>Dejá tu nombre, mail y WhatsApp y recibí al instante la clase gratis.</p>
+          <ul class="incluye">
+            <li>Qué tener en cuenta para arrancar en el video análisis</li>
+            <li>Cómo editar tus primeros videos</li>
+          </ul>
+          <a class="btn" id="btn-clase" href="#clase-gratis" data-form="">Quiero la clase gratis</a>
+        </div>
+        <img src="img/clase-gratis.jpg" alt="Tomás en la torre de filmación con auriculares y cámara, durante el Mundial Junior" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" aria-labelledby="t-contacto">
+    <div class="contenedor">
+      <div class="encabezado">
+        <span class="tag">Contacto</span>
+        <h2 id="t-contacto">Hablemos</h2>
+        <p>¿Tenés un club, un equipo o querés mejorar tu juego? Escribime y lo vemos.</p>
+      </div>
+      <div class="contacto">
+        <a class="btn btn-verde" href="https://wa.me/56944910966?text=Hola%20Tom%C3%A1s%21%20Te%20escribo%20desde%20la%20web%20de%20hockey.va." target="_blank" rel="noopener">WhatsApp <span class="dir" style="color:#06210F">+56 9 4491 0966</span></a>
+        <a class="btn btn-linea" href="https://www.instagram.com/hockey.va/" target="_blank" rel="noopener">Instagram <span class="dir">@hockey.va</span></a>
+        <a class="btn btn-linea" href="mailto:landatomas95@gmail.com">Mail <span class="dir">landatomas95@gmail.com</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="contenedor">
+    <span>© 2026 hockey.va · Tomás Landa</span>
+    <span>Video análisis de hockey</span>
+  </div>
+</footer>
+<!--/BODY-->
+</body>
+</html>
